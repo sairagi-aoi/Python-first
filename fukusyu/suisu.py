@@ -11,3 +11,8 @@ print(age + 1)
 print("飼い猫の名前と年齢を教えて下さい")
 print(name, age ,"歳")
 
+n = 9876543
+print(f"{n:,}")
+
+
+
