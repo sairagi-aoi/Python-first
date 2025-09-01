@@ -27,3 +27,5 @@ try:
 except TypeError as e:
     print(f"エラー: {e}")
     print("文字列と数値は直接計算できません")
+
+
