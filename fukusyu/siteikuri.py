@@ -36,3 +36,14 @@ while index < len(name):
     hearts = "💖" * (index + 1)
     print(f"{char}ちゃん{hearts}")
     index += 1
+
+name = "よつば"
+index = 0
+while index < len(name):
+    char = name[index]
+    gekikawa_point = "😍" * (index + 1)
+    print(f"{char}ちゃんの激カワポイントは{gekikawa_point}限界突破")
+    index += 1
+
+
+
