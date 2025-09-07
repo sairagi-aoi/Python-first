@@ -28,10 +28,26 @@ NO = {"n","no","n","いいえ"} #条件の色々な入力パターン
 
 try:
     while not is_calm:
-        if count >= MAX_ROUNDS:
+        if count >= MAX_ROUNDS:　#カウントがMax_round以上だったらTrueになる
             print("今日はここまで。水を飲む・横になる・ゆっくり深呼吸を続けるなど、無理せず休みましょう。")
             break
-#明日はここから再開する
+
+    print(f"深呼吸してみましょう。{count +1}回目")
+    ans =input("落ち着いてきましたか？(y/n) >>").strip().lower()
+
+    if ans in YES:
+        is_calm = True
+    elif ans in NO:
+        count += 1
+    else:
+        print("yかnで答えてください。")
+except KeyboardInterrupt:
+   print("\n中断しました。おつかれさまでした。この後は無理なくゆっくり過ごしてくださいね。")
+else:
+    if is_calm:
+        print("おつかれ様でした。この後は無理なくゆっくり過ごしてくださいね。")
+
+
 
 
 
