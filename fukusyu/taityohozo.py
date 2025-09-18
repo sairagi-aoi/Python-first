@@ -16,5 +16,12 @@ while True:
 
         #テキストファイルに保存
         while open("相談記録.txt","a",encoding="utf-8") as file:
-            )
+            file.write(f"=== 相談記録 ({timestamp}) ===\n")
+            file.write(f"部署: {department}\n")
+            file.write(f"問題の有無: {problem}\n")
+            file.write(f"問題の種類: {problem_type}\n")
+            file.write(f"発生時期: {problem_since}\n")
+            file.write(f"影響: {problem_impact}\n")
+            file.write(f"取った行動: {problem_action}\n")
+            
 
