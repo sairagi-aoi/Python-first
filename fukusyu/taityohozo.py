@@ -14,14 +14,35 @@ while True:
         #現在時刻を取得
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+        #出力内容を組み立て
+        record = (
+            f" === 相談記録 ({timestamp}) ===\n"
+            f"部署 : {department}\n"
+            f"問題の有無 : 有る\n" #有る場合にしかこの出力はされないから有るだけで良いんだ
+            f"問題の種類 : {problem_type}\n
+            f"発生時期: {problem_since}\n"
+            f"影響 : {problem_impact}\n"
+            f"取った行動 : {problem_action}\n"
+            + "-" * 40 + "\n\n"   
+        )
+
         #テキストファイルに保存
-        while open("相談記録.txt","a",encoding="utf-8") as file:
-            file.write(f"=== 相談記録 ({timestamp}) ===\n")
-            file.write(f"部署: {department}\n")
-            file.write(f"問題の有無: {problem}\n")
-            file.write(f"問題の種類: {problem_type}\n")
-            file.write(f"発生時期: {problem_since}\n")
-            file.write(f"影響: {problem_impact}\n")
-            file.write(f"取った行動: {problem_action}\n")
-            
+        try:
+            with open("相談記録.txt" , "a", encoding="utf-8") as f:
+                f.write(record)
+            print("記録を保存しました。後ほど印刷していただけます。")
+        except PermissionError:
+            print("保存に失敗しました:ファイルへのアクセス権限がありません。別の場所に保存するか、管理者に連絡してください。")
+        except FileNotFoundError:
+            print("保存に失敗しました : 保存先フォルダが見つかりません。パスを確認してください。")
+        except OSError as e:
+            print(f"保存に失敗しました(OSエラー) : {e}")
+
+        break
+    elif problem in ("無し","ない"):
+        print("それはよかったです。今後もし何かありましたら遠慮なく産業医までお知らせください。")
+        break
+    else:
+        print("「有る（ある）」か「無し」でお答えください。")
+        
 
