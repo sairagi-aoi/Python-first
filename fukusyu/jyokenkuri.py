@@ -28,7 +28,7 @@ NO = {"n","no","n","いいえ"} #条件の色々な入力パターン
 
 try:
     while not is_calm:
-        if count >= MAX_ROUNDS:　#カウントがMax_round以上だったらTrueになる
+        if count >= MAX_ROUNDS:#カウントがMax_round以上だったらTrueになる
             print("今日はここまで。水を飲む・横になる・ゆっくり深呼吸を続けるなど、無理せず休みましょう。")
             break
 
