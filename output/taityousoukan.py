@@ -26,4 +26,19 @@ while True:
     CAT_condhition = input("飼い猫の様子を教えて下さい >> ").strip()
 
     if CAT_condhition in ("ぐったり" ,"元気ない"):
-        cat_conthition_type = input("")
+        condition_yousu = input("現在の飼い猫の様子はいつごろから続いていますか？ >>").strip()
+        condition_eating = input("飼い猫さんの食欲はありますか？ >>").strip()
+        condition_play = input("飼い猫さんは遊んでいますか? >>").strip()
+        condition_drink = input("飼い猫さんは水を飲んでいますか？ >>").strip()
+        condition_toilet = input("飼い猫さんのトイレの様子はどうですか？ >>").strip()
+        break
+    elif CAT_condition in ("普通","元気","走り回ってる"):
+        print("いいですね！ 飼い猫さんがその調子を維持できるようにサポートを続けてあげて下さいね。")
+
+    else:
+        print("提示されている選択肢の中からお選びください")
+        break
+
+    #出力形式を構成
+
+    recode
