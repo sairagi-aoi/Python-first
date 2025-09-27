@@ -47,6 +47,12 @@ def log_entry():
         f"飼い主の体調: {OWNER_condition}\n"
         f"体調不良の種類: {condition_type}\n"
         f"発生時期: {condition_since}\n"
+        f"原因: {condition_cause}\n"
+
+        f"飼い猫の体調: {CAT_condition}\n"
+        f"現在の飼い猫の様子{condition_yousu}\n"
+        f"飼い猫の食欲"{condhition_eating}\n"
+        
         
 
 
