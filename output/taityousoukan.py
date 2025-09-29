@@ -50,12 +50,12 @@ def log_entry():
         f"原因: {condition_cause}\n"
 
         f"飼い猫の体調: {CAT_condition}\n"
-        f"現在の飼い猫の様子{condition_yousu}\n"
-        f"飼い猫の食欲"{condhition_eating}\n"
-        
-        
+        f"現在の飼い猫の様子: {condition_yousu}\n"
+        f"飼い猫の食欲: {condition_eating}\n"
+        f"飼い猫の遊び: {ccondition_play}\n"
+        f"飼い猫の水分接種: {condition_drink}\n"
+        f"飼い猫のトイレの様子: {condition_toilet}\n"
+ )
 
-
-
-    )
+#　テキストファイルに保存（エラー種別ごとに案内）
 
