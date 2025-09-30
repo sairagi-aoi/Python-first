@@ -58,4 +58,8 @@ def log_entry():
  )
 
 #　テキストファイルに保存（エラー種別ごとに案内）
-
+try:
+    with open(TEXT_FILE, "a", encoding="utf-8") as f:
+        f.write(record)
+        print("回答が正常に保存されました。後ほど印刷していただけます。")
+        
