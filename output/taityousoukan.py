@@ -61,5 +61,19 @@ def log_entry():
 try:
     with open(TEXT_FILE, "a", encoding="utf-8") as f:
         f.write(record)
-        print("回答が正常に保存されました。後ほど印刷していただけます。")
+    print("回答が正常に保存されました。後ほど印刷していただけます。")
+except PermissionError:
+    print("保存に失敗しました。ファイルへのアクセス権限がありません。")
+except FileNotFoundError:
+    print("保存に失敗しました。指定されたファイルが見つかりません。")
+except OSError as e:
+    print(f"保存に失敗しました。OSにエラーが発生しました: {e}")
+
+
+elif OWNER_condition in ("普通","良い","絶好調") and CAT_condition in ("普通","元気","走り回ってる"):
+    print("いいですね！ その調子で過ごしましょう！")
+    break
+else :
+    print("表示されている選択肢の中からお選びください。")
+
         
