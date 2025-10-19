@@ -11,7 +11,7 @@ def append_csv(path: str | Path, row: dict, fieldnames: list[str]) -> None:
     """
     p = Path(path) #path文字列から　Pathオブジェクトを作る
     p.parent.mkdir(parents=True, exist_ok=True) #Path　.mkdirの呼び出し　
-    is_new = (not p.ecists())or (p.stat().st_size == 0)
+    is_new = (not p.exists())or (p.stat().st_size == 0)
 
     with p.open("a", encodhing = "utf-8" , newline="") as f:
         w = csv.DictWriter(f , fieldnames = fieldnames)
