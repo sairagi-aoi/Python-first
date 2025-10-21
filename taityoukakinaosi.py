@@ -1,12 +1,33 @@
 from datetime import datetime
-
+from src.io_csv import append_csv #src.io_csvからappend_csvをインポートする
 TEXT_FILE = "health_cat_log.txt" #テキストファイルを作成
+CSV_FILE = "health_cat_log.csv" #CSVファイルを作成
+
+FIELDNAMES =[
+    "timestamp","owner","cat",
+    "owner_condition" ,"cat_condition",
+    "owner_score" , "cat_score",
+    "condition_type" , "condition_since" , "condition_cause",
+    "condition_yousu" , "condition_eating" , "condition_play" ,
+    "condition_drink" , "condition_toilet"
+]
+#スケール辞書（そのままいじらない）
 OWNER_SCALE ={"最悪":-2,"悪い":-1,"普通":0,"良い":1,"絶好調":2} #飼い主の体調スケール
 CAT_SCALE = {"ぐったり":-2,"元気ない":-1,"普通":0,"元気":1,"走り回ってる":2} #飼い猫の体調スケール
 
-def log_entry(): #変数ログエントリーをdefで作成
-    owner_condition_choices = "(最悪/悪い/普通/良い/絶好調)"
-    cat_condition_choices = "(ぐったり/元気ない/普通/元気/走り回ってる)"
+
+def log_entry():
+    #書き込み直前で csv用rowを作って append_cs
+    row = {
+        "timestamp": timestamp, "owner": owner, "cat": cat,
+        "owner_condition": owner_condition, "cat_condition": cat_condition,
+        "owner_score": OWNER_SCALE[owner_condition], "cat_score" :CAT_SCALE[cat_condition],
+        "condition_type": condition_type, "condition_since": condition_since, 
+        "condition_cause": condition_cause, "condition_yousu": condition_yousu,
+        "condition_eating": condition_eating, "condition_play": condition_play,
+        "condition_drink": condition_drink, "condition_toilet": condition_toilet,
+    }
+
 
     while True: #ループの始まり
         owner = input("あなたの名前を教えて下さい: ").strip() #ユーザーの名前を尋ねる
@@ -68,6 +89,16 @@ def log_entry(): #変数ログエントリーをdefで作成
         print("保存に失敗しました。指定されたファイルが見つかりません。") #指定されたファイルが見つからないエラーが発生。
     except OSError as e:
         print(f"保存に失敗しました。OSにエラーが発生しました： {e}") 
+
+        append_csv(CSV_FILE, row, FIELDNAMES)
+        print("回答がCSVファイルにも保存されました")
+    except PermissionError:
+        print("保存に失敗しました。ファイルへのアクセス権限がありません。")
+    except FileNotFoundError:
+        print("保存に失敗しました。指定されたファイルが見つかりません")
+    except OSError as e:
+        print("保存に失敗しました。 OSにエラーが発生しました")
+        
 
 if __name__ == "__main__": #__name__はマジック変数
     log_entry()
