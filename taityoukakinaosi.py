@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime #datetimeからdatetimeをインポートする
 from src.io_csv import append_csv #src.io_csvからappend_csvをインポートする
 TEXT_FILE = "health_cat_log.txt" #テキストファイルを作成
 CSV_FILE = "health_cat_log.csv" #CSVファイルを作成
@@ -17,23 +17,13 @@ CAT_SCALE = {"ぐったり":-2,"元気ない":-1,"普通":0,"元気":1,"走り�
 
 
 def log_entry():
-    #書き込み直前で csv用rowを作って append_cs
-    row = {
-        "timestamp": timestamp, "owner": owner, "cat": cat,
-        "owner_condition": owner_condition, "cat_condition": cat_condition,
-        "owner_score": OWNER_SCALE[owner_condition], "cat_score" :CAT_SCALE[cat_condition],
-        "condition_type": condition_type, "condition_since": condition_since, 
-        "condition_cause": condition_cause, "condition_yousu": condition_yousu,
-        "condition_eating": condition_eating, "condition_play": condition_play,
-        "condition_drink": condition_drink, "condition_toilet": condition_toilet,
-    }
-
-
+    owner_condition_choices = f"({'/'.join(OWNER_SCALE.keys())})"
+    cat_condition_choices = f"({'/'.join(CAT_SCALE.keys())})"
     while True: #ループの始まり
         owner = input("あなたの名前を教えて下さい: ").strip() #ユーザーの名前を尋ねる
         cat = input("飼い猫の名前教えて下さい: ").strip() #ユーザーの飼い猫の名前を尋ねる
-        owner_condition = input(f"あなたの体調を教えて下さい{owner_condition_choices} >>").strip()
-        cat_condition = input(f"飼い猫の体調を教えて下さい{cat_condition_choices} >>").strip()
+        owner_condition = input(f"あなたの体調を教えて下さい{OWNER_SCALE} >>").strip()
+        cat_condition = input(f"飼い猫の体調を教えて下さい{CAT_SCALE} >>").strip()
 
         #　入力が正しいか確認する（選択肢にない入力はやり直し）
         if owner_condition not in OWNER_SCALE or cat_condition not in CAT_SCALE:
@@ -77,6 +67,17 @@ def log_entry():
         f"飼い猫の水分接種: {condition_drink}\n"
         f"飼い猫のトイレの様子: {condition_toilet}\n"
         )
+
+    row = {
+        "timestamp": timestamp, "owner": owner, "cat": cat,
+        "owner_condition": owner_condition, "cat_condition": cat_condition,
+        "owner_score": OWNER_SCALE[owner_condition], "cat_score" :CAT_SCALE[cat_condition],
+        "condition_type": condition_type, "condition_since": condition_since, 
+        "condition_cause": condition_cause, "condition_yousu": condition_yousu,
+        "condition_eating": condition_eating, "condition_play": condition_play,
+        "condition_drink": condition_drink, "condition_toilet": condition_toilet,
+    }
+
 
     #テキストファイルに保存
     try:
