@@ -91,6 +91,9 @@ def log_entry():
     except OSError as e:
         print(f"保存に失敗しました。OSにエラーが発生しました： {e}") 
 
+    try:
+        with open(TEXT_FILE, "a", encoding="utf-8") as f:
+            f.write(record)   
         append_csv(CSV_FILE, row, FIELDNAMES)
         print("回答がCSVファイルにも保存されました")
     except PermissionError:
