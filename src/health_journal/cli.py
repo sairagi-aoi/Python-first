@@ -19,6 +19,20 @@ from health_journal.journal import (
 logger = logging.getLogger(__name__)
 
 
+class IssueCounterHandler(logging.Handler):
+    """Custom logging handler to count parsing/validation issues."""
+
+    def __init__(self):
+        """Initialize the handler."""
+        super().__init__()
+        self.issue_count = 0
+
+    def emit(self, record):
+        """Count WARNING and ERROR level messages."""
+        if record.levelno >= logging.WARNING:
+            self.issue_count += 1
+
+
 def validate_mood(value: str) -> int:
     """Validate mood value.
 
@@ -280,11 +294,19 @@ def cmd_wellness_stats(args: argparse.Namespace) -> int:
         args: Parsed arguments
 
     Returns:
-        Exit code (0 for success)
+        Exit code (0 for success, 2 if strict mode and issues found)
     """
     try:
-        # Setup logging
+        # Setup logging with issue counter if strict mode
         logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
+
+        issue_handler = None
+        if args.strict:
+            issue_handler = IssueCounterHandler()
+            issue_handler.setLevel(logging.WARNING)
+            # Add handler to the journal module logger
+            journal_logger = logging.getLogger("health_journal.journal")
+            journal_logger.addHandler(issue_handler)
 
         # Parse period
         period = args.since or "30d"
@@ -309,6 +331,10 @@ def cmd_wellness_stats(args: argparse.Namespace) -> int:
         output = format_stats_output(stats, period, start_date, end_date)
         print(output)
 
+        # Check for issues in strict mode
+        if args.strict and issue_handler and issue_handler.issue_count > 0:
+            return 2
+
         return 0
 
     except Exception as e:
@@ -323,11 +349,19 @@ def cmd_wellness_list(args: argparse.Namespace) -> int:
         args: Parsed arguments
 
     Returns:
-        Exit code (0 for success)
+        Exit code (0 for success, 2 if strict mode and issues found)
     """
     try:
-        # Setup logging
+        # Setup logging with issue counter if strict mode
         logging.basicConfig(level=logging.WARNING, format="%(levelname)s: %(message)s")
+
+        issue_handler = None
+        if args.strict:
+            issue_handler = IssueCounterHandler()
+            issue_handler.setLevel(logging.WARNING)
+            # Add handler to the journal module logger
+            journal_logger = logging.getLogger("health_journal.journal")
+            journal_logger.addHandler(issue_handler)
 
         # Parse period
         period = args.since or "30d"
@@ -357,6 +391,10 @@ def cmd_wellness_list(args: argparse.Namespace) -> int:
             mood_str = f"mood={entry.mood:+d}" if entry.mood is not None else "mood=N/A"
             energy_str = f"energy={entry.energy}" if entry.energy is not None else "energy=N/A"
             print(f"{entry.timestamp.isoformat()}  {mood_str}  {energy_str}  {entry.path}")
+
+        # Check for issues in strict mode
+        if args.strict and issue_handler and issue_handler.issue_count > 0:
+            return 2
 
         return 0
 
@@ -429,6 +467,11 @@ def setup_wellness_parser(subparsers) -> None:
         type=str,
         help="期間指定 (例: 7d, 4w, 3m) デフォルト: 30d",
     )
+    stats_parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="破損・欠損・不正なエントリがあれば非0終了 (exit 2)",
+    )
     stats_parser.set_defaults(func=cmd_wellness_stats)
 
     # wellness list subcommand
@@ -440,5 +483,10 @@ def setup_wellness_parser(subparsers) -> None:
         "--since",
         type=str,
         help="期間指定 (例: 7d, 4w, 3m) デフォルト: 30d",
+    )
+    list_parser.add_argument(
+        "--strict",
+        action="store_true",
+        help="破損・欠損・不正なエントリがあれば非0終了 (exit 2)",
     )
     list_parser.set_defaults(func=cmd_wellness_list)
