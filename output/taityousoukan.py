@@ -4,41 +4,49 @@ TEXT_FILE = "health_cat_log.txt"
 OWNER_SCALE = {"最悪": -2, "悪い": -1, "普通": 0, "良い": 1, "絶好調": 2}
 CAT_SCALE = {"ぐったり": -2, "元気ない": -1, "普通": 0, "元気": 1, "走り回ってる": 2}
 
-def ask_choice(prompt: str, choices: list[str]) -> str:
-    """"""
+def ask_choice(prompt: str, choices: list[str]) -> str: #プロンプトと選択肢を整数化
+    """choices以外は受け付けずに再入力させる"""
+    visible = "/".join(choices)
+    while True:
+        x = input(f"{prompt} {visible} >> ").strip()
+        if x in choices:
+            return x
+        print(f"入力は{visible}から選んでください。")
+
+def ask_nonempty(prompt: str) -> str:
+    """空文字を禁止する"""
+    while True:
+        x = input(prompt).strip()
+        if x:
+            return x
+        print("空欄は不可です。もう一度入力してください。")
+
 
 def log_entry():
-    owner = input("あなたの名前を教えてください: ").strip()
-    cat = input("飼い猫の名前教えてください: ").strip()
+    owner = ask_nonempty("あなたの名前を教えてください: ")
+    cat = ask_nonempty("飼い猫の名前教えてください: ")
 
-    while True:
-        OWNER_condition = input("あなたの体調を教えてください >> ").strip()
+#飼い主の体調　（選択肢バリデーション）
 
-        if OWNER_condition in ("最悪","悪い"):
-            condition_type = input("その体調不良は精神面と身体面のどちらですか？それとも両方ですか？（精神面/身体面/両方) >>").strip()
-            condition_since = input("その体調不良はいつ頃から発生していますか？ >> ").strip()
-            condition_cause = input("その体調不良の原因として思い当たることはありますか？（無い場合は「無し」と入力して下さい) >> ").strip()
-            break
-        elif OWNER_condition in ("普通","良い","絶好調"):
-             print("良いですね！ その調子で無理なく楽しんでお過ごし下さい。")
-        else:
-             print("提示されている選択肢の中からお選びください")
+cat_condition = ask_choice("飼い猫の様子を教えて下さい",list(CAT_SCALE.keys()))
+cat_detail = {}
+if cat_condition in ("ぐったり","元気ない"):
+    cat_detail["since"] = ask_nonempty("いつ頃から続いていますか？ >> ")
+    cat_detail["eating"] ask_choice("食欲はありますか？", ["ある","ない", "不明"])
+    cat_detail["play"] = ask_choice("遊んでいますか？",["遊ぶ","遊ばない","不明"])
+    cat_detail["drink"] = ask_choice("水を飲んでいますか？",["飲む","飲まない","不明"])
+    cat_detail["toilet"] = ask_choice("トイレの様子はどうですか？" ,["正常","下痢","便秘","嘔吐あり","不明"])
+
+else:
+    print("いいですね！ その調子を維持できる様にサポートしてあげて下さい。")
+
+#保存条件：どちらかが不調の時だけ
+should_save = (OWNER_condition in ("最悪","悪い")) or (cat_condition in ("ぐったり","元気ない")
+if not should_save:
+    print("両者とも良好の為、今回は記録をスキップしました。")
+    return
     
-    while True:
-        CAT_condition = input("飼い猫の様子を教えて下さい >> ").strip()
-
-        if CAT_condition in ("ぐったり" ,"元気ない"):
-            condition_yousu = input("現在の飼い猫の様子はいつごろから続いていますか？ >>").strip()
-            condition_eating = input("飼い猫さんの食欲はありますか？ >>").strip()
-            condition_play = input("飼い猫さんは遊んでいますか? >>").strip()
-            condition_drink = input("飼い猫さんは水を飲んでいますか？ >>").strip()
-            condition_toilet = input("飼い猫さんのトイレの様子はどうですか？ >>").strip()
-            break
-        elif CAT_condition in ("普通","元気","走り回ってる"):
-            print("いいですね！ 飼い猫さんがその調子を維持できるようにサポートを続けてあげて下さいね。")
-
-    else:
-        print("提示されている選択肢の中からお選びください")
+    
     
 # 現在時刻を取得
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
