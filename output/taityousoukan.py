@@ -52,21 +52,40 @@ if not should_save:
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     #出力形式を組み立て
-    record = (
-        f"=== 飼い猫と飼い主の健康状態相関調査ログ ({timestamp}) ===\n"
-        f"飼い主の名前: {owner}\n"
-        f"飼い主の体調: {OWNER_condition}\n"
-        f"体調不良の種類: {condition_type}\n"
-        f"発生時期: {condition_since}\n"
-        f"原因: {condition_cause}\n"
+    lines = [
+        f" === 飼い猫と飼い主の健康状態相関調査ログ" ({timestamp}) ===",
+        f"飼い主の名前： {owner}",
+        f"飼い主の体調： {OWNER_condition} ({OWNER_SCALE{owner_condition}})",
+    ]
+    if owner_detail:
+        lines +=[
+            f"体調不良の種類: {owner_detail['type']}",
+            f"発生時期 : {owner_detail['since']}",
+            f"原因: {owner_detail['cause']}",
 
-        f"飼い猫の体調: {CAT_condition}\n"
-        f"現在の飼い猫の様子: {condition_yousu}\n"
-        f"飼い猫の食欲: {condition_eating}\n"
-        f"飼い猫の遊び: {ccondition_play}\n"
-        f"飼い猫の水分接種: {condition_drink}\n"
-        f"飼い猫のトイレの様子: {condition_toilet}\n"
- )
+        ]
+    line += [
+        f"飼い猫の名前: {cat}",
+        f"飼い猫の体調: {cat_condition} ({CAT_SCALE[cat_condition]})",
+    ]
+    if cat_detail:
+        lines += [
+            f"現在の飼い猫の様子 (開始時期) : {cat_detail['sine']}",
+            f"飼い猫の食欲 : {cat_detail['eating']}",
+            f"飼い猫の遊び: {cat_detail['play']}",
+            f"飼い猫の水分摂取: {cat_detail['drink']}",
+            f"飼い猫のトイレの様子: {cat_detail['toilet']}",
+        ]
+
+    record = "\n".join(lines)+"\n\n"
+
+    #ここまで書いた（2025/11/04 21:45）
+    
+
+
+    ]
+    
+
 
 #　テキストファイルに保存（エラー種別ごとに案内）
 try:
