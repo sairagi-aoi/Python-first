@@ -8,7 +8,7 @@ def ask_choice(prompt: str, choices: list[str]) -> str: #プロンプトと選�
     """choices以外は受け付けずに再入力させる"""
     visible = "/".join(choices)
     while True:
-        x = input(f"{prompt} {visible} >> ").strip()
+        x = input(f"{prompt} ({visible}) >> ").strip()
         if x in choices:
             return x
         print(f"入力は{visible}から選んでください。")
@@ -27,21 +27,27 @@ def log_entry():
     cat = ask_nonempty("飼い猫の名前教えてください: ")
 
 #飼い主の体調　（選択肢バリデーション）
+    owner_condition = ask_choice("あなたの体調を教えて下さい", list(OWNER_SCALE.keys()))
+    cat_condition = ask_choice("飼い猫の様子を教えて下さい。", list(CAT_SCALE.keys()))
 
-cat_condition = ask_choice("飼い猫の様子を教えて下さい",list(CAT_SCALE.keys()))
-cat_detail = {}
-if cat_condition in ("ぐったり","元気ない"):
-    cat_detail["since"] = ask_nonempty("いつ頃から続いていますか？ >> ")
-    cat_detail["eating"] ask_choice("食欲はありますか？", ["ある","ない", "不明"])
-    cat_detail["play"] = ask_choice("遊んでいますか？",["遊ぶ","遊ばない","不明"])
-    cat_detail["drink"] = ask_choice("水を飲んでいますか？",["飲む","飲まない","不明"])
-    cat_detail["toilet"] = ask_choice("トイレの様子はどうですか？" ,["正常","下痢","便秘","嘔吐あり","不明"])
+    #不調時のみ詳細
+    owner_detail = {}
+    if owner_condition in ("最悪", "悪い"):
+        owner_detail["type"] = ask_choice("その体調不良は？", ["精神面","身体面","両方"])
+        owner_detail["since"] = ask_nonempty("いつ頃から発生していますか？ >> ")
+        owner_detail["cause"] = ask_nonempty("原因として思いあたることはありますか？ (なければ「無し」と答えて下さい) >> ")
+
+    cat_detail = {}
+    if cat_condition in ("ぐったり","元気ない"):
+        cat_detail["since"] = ask_nonempty(" (猫) その様子はいつ頃から続いていますか？ >> ")
+        cat_detail["eating"] =ask_choice(" (猫) 食欲はありますか?", ["ある","ない","どちらともいえない"])
+        #ここまで書いた（2025/11/05 22:20）
 
 else:
     print("いいですね！ その調子を維持できる様にサポートしてあげて下さい。")
 
 #保存条件：どちらかが不調の時だけ
-should_save = (OWNER_condition in ("最悪","悪い")) or (cat_condition in ("ぐったり","元気ない")
+should_save = (owner_condition in ("最悪","悪い")) or (cat_condition in ("ぐったり","元気ない"))
 if not should_save:
     print("両者とも良好の為、今回は記録をスキップしました。")
     return
@@ -80,13 +86,6 @@ if not should_save:
     record = "\n".join(lines)+"\n\n"
 
     #ここまで書いた（2025/11/04 21:45）
-    
-
-
-    ]
-    
-
-
 #　テキストファイルに保存（エラー種別ごとに案内）
 try:
     with open(TEXT_FILE, "a", encoding="utf-8") as f:
@@ -98,10 +97,3 @@ except FileNotFoundError:
     print("保存に失敗しました。指定されたファイルが見つかりません。")
 except OSError as e:
     print(f"保存に失敗しました。OSにエラーが発生しました: {e}")
-
-
-elif OWNER_condition in ("普通","良い","絶好調") and CAT_condition in ("普通","元気","走り回ってる"):
-    print("いいですね！ その調子で過ごしましょう！")
-    break
-else :
-    print("表示されている選択肢の中からお選びください。")
