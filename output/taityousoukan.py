@@ -41,20 +41,21 @@ def log_entry():
     if cat_condition in ("ぐったり","元気ない"):
         cat_detail["since"] = ask_nonempty(" (猫) その様子はいつ頃から続いていますか？ >> ")
         cat_detail["eating"] =ask_choice(" (猫) 食欲はありますか?", ["ある","ない","どちらともいえない"])
-        #ここまで書いた（2025/11/05 22:20）
+        cat_detail["play"] = ask_choice("(猫) 遊びの様子はどうですか？",["遊んでいる","あまり遊ばない","全く遊ばない"])
+        cat_detail["drink"] = ask_choice("(猫) 水は飲んでいますか？",["よく飲んでいる","いつも通り","あまり飲まない","全く飲まない"])
+        cat_detail["toilet"] = ask_choice("(猫) トイレの様子は？",["通常","下痢","便秘","その他"])
+    else:
+        print("いいですね！ その調子を維持できる様にサポートしてあげて下さい。")
 
-else:
-    print("いいですね！ その調子を維持できる様にサポートしてあげて下さい。")
-
-#保存条件：どちらかが不調の時だけ
-should_save = (owner_condition in ("最悪","悪い")) or (cat_condition in ("ぐったり","元気ない"))
-if not should_save:
-    print("両者とも良好の為、今回は記録をスキップしました。")
-    return
+    #保存条件：どちらかが不調の時だけ
+    should_save = (owner_condition in ("最悪","悪い")) or (cat_condition in ("ぐったり","元気ない"))
+    if not should_save:
+        print("両者とも良好の為、今回は記録をスキップしました。")
+        return
     
     
     
-# 現在時刻を取得
+    # 現在時刻を取得
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     #出力形式を組み立て
@@ -85,15 +86,14 @@ if not should_save:
 
     record = "\n".join(lines)+"\n\n"
 
-    #ここまで書いた（2025/11/04 21:45）
-#　テキストファイルに保存（エラー種別ごとに案内）
-try:
-    with open(TEXT_FILE, "a", encoding="utf-8") as f:
-        f.write(record)
-    print("回答が正常に保存されました。後ほど印刷していただけます。")
-except PermissionError:
-    print("保存に失敗しました。ファイルへのアクセス権限がありません。")
-except FileNotFoundError:
-    print("保存に失敗しました。指定されたファイルが見つかりません。")
-except OSError as e:
-    print(f"保存に失敗しました。OSにエラーが発生しました: {e}")
+    #　テキストファイルに保存（エラー種別ごとに案内）
+    try:
+        with open(TEXT_FILE, "a", encoding="utf-8") as f:
+         f.write(record)
+        print("回答が正常に保存されました。後ほど印刷していただけます。")
+    except PermissionError:
+        print("保存に失敗しました。ファイルへのアクセス権限がありません。")
+    except FileNotFoundError:
+        print("保存に失敗しました。指定されたファイルが見つかりません。")
+    except OSError as e:
+        print(f"保存に失敗しました。OSにエラーが発生しました: {e}")
