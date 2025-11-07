@@ -56,7 +56,7 @@ def log_entry():
     
     
     # 現在時刻を取得
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     #出力形式を組み立て
     lines = [
