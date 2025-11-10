@@ -40,7 +40,7 @@ def log_entry():
     cat_detail = {}
     if cat_condition in ("ぐったり","元気ない"):
         cat_detail["since"] = ask_nonempty(" (猫) その様子はいつ頃から続いていますか？ >> ")
-        cat_detail["eating"] =ask_choice(" (猫) 食欲はありますか?", ["ある","ない","どちらともいえない"])
+        cat_detail["eating"] = ask_choice(" (猫) 食欲はありますか?", ["ある","ない","どちらともいえない"])
         cat_detail["play"] = ask_choice("(猫) 遊びの様子はどうですか？",["遊んでいる","あまり遊ばない","全く遊ばない"])
         cat_detail["drink"] = ask_choice("(猫) 水は飲んでいますか？",["よく飲んでいる","いつも通り","あまり飲まない","全く飲まない"])
         cat_detail["toilet"] = ask_choice("(猫) トイレの様子は？",["通常","下痢","便秘","その他"])
@@ -52,8 +52,6 @@ def log_entry():
     if not should_save:
         print("両者とも良好の為、今回は記録をスキップしました。")
         return
-    
-    
     
     # 現在時刻を取得
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -93,8 +91,6 @@ def log_entry():
         print("回答が正常に保存されました。後ほど印刷していただけます。")
     except PermissionError:
         print("保存に失敗しました。ファイルへのアクセス権限がありません。")
-    except FileNotFoundError:
-        print("保存に失敗しました。指定されたファイルが見つかりません。")
     except OSError as e:
         print(f"保存に失敗しました。OSにエラーが発生しました: {e}")
 
