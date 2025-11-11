@@ -1,6 +1,18 @@
 from datetime import datetime
+from src.io_csv import append_csv
 
 TEXT_FILE = "health_cat_log.txt"
+CSV_FILE = "health_cat_log.csv"
+
+FIELDNAMES = [
+    "timestamp", "owner", "cat",
+    "owner_condition", "cat_condition",
+    "owner_score", "cat_score",
+    "condition_type", "condition_since", "condition_cause",
+    "condition_yousu", "condition_eating", "condition_play",
+    "condition_drink", "condition_toilet"
+]
+
 OWNER_SCALE = {"最悪": -2, "悪い": -1, "普通": 0, "良い": 1, "絶好調": 2}
 CAT_SCALE = {"ぐったり": -2, "元気ない": -1, "普通": 0, "元気": 1, "走り回ってる": 2}
 
@@ -83,6 +95,16 @@ def log_entry():
         ]
 
     record = "\n".join(lines)+"\n\n"
+    row = {
+        "timstamp": timestamp,
+        "owner": owner,
+        "cat": cat,
+        "owner_condition": owner_condition,
+        "cat_condition":cat_condition,
+        "owner_score": OWNER_SCALE[owner_condition],
+        "cat_score": CAT_SCALE[cat_condition],
+        #ここまで書いた
+    }
 
     #　テキストファイルに保存（エラー種別ごとに案内）
     try:
@@ -93,6 +115,16 @@ def log_entry():
         print("保存に失敗しました。ファイルへのアクセス権限がありません。")
     except OSError as e:
         print(f"保存に失敗しました。OSにエラーが発生しました: {e}")
+
+    try:
+        with open(TEXT_FILE, "a", encoding="utf-8") as f:
+            f.write(record)
+        append_csv(CSV_FILE, row, FIELDNAMES)
+        print("回答がcsvファイルにも保存されました")
+    except PermissionError:
+        print("保存に失敗しました。ファイルへのアクセス権限がありません。")
+    except OSError as e:
+        print("保存に失敗しました。 OSにエラーが発生しました")
 
 def main():
     log_entry()
