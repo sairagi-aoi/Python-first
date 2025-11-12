@@ -103,7 +103,13 @@ def log_entry():
         "cat_condition":cat_condition,
         "owner_score": OWNER_SCALE[owner_condition],
         "cat_score": CAT_SCALE[cat_condition],
-        #ここまで書いた
+        "condition_type": owner_detail.get("type", ""),
+        "condition_sine": owner_detail.get("sine", "") or cat_detail.get("sine",""),
+        "condition_cause": owner_detail.get("since",""),
+        "condition"
+
+
+
     }
 
     #　テキストファイルに保存（エラー種別ごとに案内）
