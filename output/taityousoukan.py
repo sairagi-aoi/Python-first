@@ -106,10 +106,11 @@ def log_entry():
         "condition_type": owner_detail.get("type", ""),
         "condition_sine": owner_detail.get("sine", "") or cat_detail.get("sine",""),
         "condition_cause": owner_detail.get("since",""),
-        "condition"
-
-
-
+        "condition_yousu": cat_condition if cat_detail else "",
+        "condition_eating": cat_detail.get("eating", ""),
+        "condition_play": cat_detail.get("drink",""),
+        "condition_drink":cat_detail.get("drink", ""),
+        "condition_toilet": cat_detail.get("toilet", "")
     }
 
     #　テキストファイルに保存（エラー種別ごとに案内）
