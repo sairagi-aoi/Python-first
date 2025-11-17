@@ -65,8 +65,7 @@ def log_entry():
         print("両者とも良好の為、今回は記録をスキップしました。")
         return
     
-    # 現在時刻を取得
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    
     
     #出力形式を組み立て
     lines = [
