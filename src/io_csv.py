@@ -26,4 +26,3 @@ def append_csv(path: str | Path, row: dict, fieldnames: list[str]) -> None:
             row["timestamp"] = datetime.cow().strftime("%Y-%m-%d %H:%M:%s")
         safe_row = {k: row.get(k, "") for k in fieldnames}
         w.writerow(safe_row)
-　
