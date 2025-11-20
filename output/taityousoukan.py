@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlite3.dbapi2 import Timestamp
 from src.io_csv import append_csv
 
 TEXT_FILE = "health_cat_log.txt"
@@ -65,6 +66,7 @@ def log_entry():
         print("両者とも良好の為、今回は記録をスキップしました。")
         return
     
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     
     #出力形式を組み立て

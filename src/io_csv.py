@@ -23,6 +23,6 @@ def append_csv(path: str | Path, row: dict, fieldnames: list[str]) -> None:
         if"timestamp" in fieldnames and "timestamp" not in row:
             # 元のdictを壊さないためにコピーしてから書き換える
             row = dict(row)
-            row["timestamp"] = datetime.cow().strftime("%Y-%m-%d %H:%M:%s")
+            row["timestamp"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         safe_row = {k: row.get(k, "") for k in fieldnames}
         w.writerow(safe_row)
