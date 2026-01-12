@@ -16,7 +16,7 @@ if input_dept_id in valid_dept_ids:
     print(f'部署番号{input_dept_id}が確認できました。処理を進めます。')
 
 else:
-    print('[エラー]番号が正しくないか、入力されt')
+    print('[エラー]番号が正しくないか、入力され')
 
 
     

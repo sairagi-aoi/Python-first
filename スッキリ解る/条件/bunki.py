@@ -16,8 +16,7 @@ def normalize_dept_id(raw:str) ->str:#入力を受け取って部署コードに
     return raw.strip().lower() #前後の空白を削除し大文字を小文字に変換して返す
 
 def show_help() -> None:
-    print("" \
-    "入力者向け確認手段:")
-    print()
-
-
+    print("\n入力者向け確認手段：")
+    print("- 部署番号一覧(社内の部署マスタ / 共有フォルダ / 配布資料)で確認してください。")
+    print("-ざっくり手順：1-一覧確認 → 2-正しい番号入力 → 3-再チェック → 4-送信\n")
+    
