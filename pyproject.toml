@@ -1,0 +1,18 @@
+[project]
+name = "health-journal"
+version = "0.1.0"
+description = "Health Journal - A tool for tracking health data"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+authors = [
+    {name = "satoshuma"}
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
