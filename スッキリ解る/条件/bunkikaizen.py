@@ -32,5 +32,6 @@ def show_help() ->None:
 
 def show_vaild_deps() -> None:
     print("\n 登録済み部署番号(参考)：")
-    for code name in sorted(DEPT_MASTER.item())
+    for code name in sorted(DEPT_MASTER.item()):
+        print
     
