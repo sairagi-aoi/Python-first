@@ -30,6 +30,11 @@ def not_str() ->str:
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 
+def append_log(row: dict) ->None:
+    """csvに一行追加する (ファイルがなければヘッダを開く)"""
+    
+
+
 
 
 
