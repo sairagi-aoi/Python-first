@@ -56,7 +56,7 @@ def show_vaild_depts() ->None:
 
 def sugest_similar(dept_id : str) ->None:
     """入力ミスの疑いがある場合に似た候補を表示する"""
-    candidates = get_close_matches(dept_id,VALD_DEPT_id n=3 ,cutoff=0.6) #ユーザーの入力に0.6以上の類似性がある項目だけを３件返す
+    candidates = get_close_matches(dept_id,VALD_DEPT_id, n=3 ,cutoff=0.6) #ユーザーの入力に0.6以上の類似性がある項目だけを３件返す
     if candidates: #candidatesが空でなければ
         print("もしかして")
         for c in candidates: 
@@ -126,7 +126,13 @@ def main()->None:
                 "timestamp":ts,
                 "input_raw":input_raw,
                 "input_norm":"dept_id"
-                "initial_result":"OK",
+                "initial_result":"NG",
+                "choice" : "0",
+                "corrected_raw" : "",
+                "corrected_norm":"",
+                "final_result":"CANCEL",
+                "note": "",
+                
             })
             return
         
