@@ -33,7 +33,7 @@ def not_str() ->str:
 def append_log(row: dict) ->None:
     """csvに一行追加する (ファイルがなければヘッダを開く)"""
     file_extstis = LOG_Path.exists()
-    with LOG_Path.open ("a",newline="", encoding= "wtf-8-sing" ) as f:
+    with LOG_Path.open ("a",newline="", encoding= "utf-8-sig" ) as f:
         writer = csv.DictWriter(f, fieldanmes=LOG_FIELDS)
         if not file_extstis:
             writer.writeheader()
@@ -68,7 +68,7 @@ def sugest_similar(dept_id : str) ->None:
 def prompt_dept_id() -> tuple[str,str]:
     """(生入力正規化後）を返す"""
     while True:
-        raw = input("部署番号を入力してください") #ユーザー入力の生データをそのままrawに代入する。この場面ではまだ表記揺れが残っている
+        raw = input("部署番号を入力してください＞") #ユーザー入力の生データをそのままrawに代入する。この場面ではまだ表記揺れが残っている
         dept_id = normalaization_dept_id(raw) #ユーザーのなま入力を整えてdept_idに代入する
         if dept_id:
             return raw,dept_id #rawと整えられたnユーザー入力の二つを返す
@@ -77,7 +77,7 @@ def prompt_dept_id() -> tuple[str,str]:
 def supervisor_decision() ->str:
     """上司判断 : 1=こちらで修正入力 / 2=差し戻し / 3=一覧表示 / 0=中止 """
     print("\上司に確認 : どうしますか？")
-    print("1）こちらで修正作業を行う")
+    print("1こちらで修正作業を行う")
     print("2)差し戻す（再提出を依頼する)")
     print("3)登録済み部署一覧を表示する")
     print("0)中止する")
@@ -94,7 +94,7 @@ def main()->None:
     print("目的 : 部署番号が正しいか確認し、誤りなら上司判断(修正・差し戻し)を行う\n")
 
     input_raw,dept_id = prompt_dept_id()
-    ts = now_str()
+    ts = not_str()
 
     #正常系
     if dept_id in DEPT_MASTER:
@@ -125,14 +125,13 @@ def main()->None:
             append_log({
                 "timestamp":ts,
                 "input_raw":input_raw,
-                "input_norm":"dept_id"
+                "input_norm":"dept_id",
                 "initial_result":"NG",
                 "choice" : "0",
                 "corrected_raw" : "",
                 "corrected_norm":"",
                 "final_result":"CANCEL",
-                "note": "",
-                
+                "note": "",   
             })
             return
         
