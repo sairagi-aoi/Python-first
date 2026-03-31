@@ -34,7 +34,7 @@ def append_log(row: dict) ->None:
     """csvに一行追加する (ファイルがなければヘッダを開く)"""
     file_extstis = LOG_Path.exists()
     with LOG_Path.open ("a",newline="", encoding= "utf-8-sig" ) as f:
-        writer = csv.DictWriter(f, fieldanmes=LOG_FIELDS)
+        writer = csv.DictWriter(f, fieldnames=LOG_FIELDS)
         if not file_extstis:
             writer.writeheader()
         writer.writerow(row) #CSVに１行追記する処理ですよ
