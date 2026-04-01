@@ -18,7 +18,7 @@ LOG_FIELDS = [
     "timestamp",
     "input_raw",
     "input_norm",
-    "initail_result", #ok/NG
+    "initial_result", #ok/NG
     "choice",          
     "corrected_raw",
     "corrected_norm",
@@ -34,7 +34,7 @@ def append_log(row: dict) ->None:
     """csvに一行追加する (ファイルがなければヘッダを開く)"""
     file_extstis = LOG_Path.exists()
     with LOG_Path.open ("a",newline="", encoding= "utf-8-sig" ) as f:
-        writer = csv.DictWriter(f, fieldnames=LOG_FIELDS)
+        writer = csv.DictWriter(f, fieldnames= LOG_FIELDS)
         if not file_extstis:
             writer.writeheader()
         writer.writerow(row) #CSVに１行追記する処理ですよ
@@ -68,7 +68,7 @@ def sugest_similar(dept_id : str) ->None:
 def prompt_dept_id() -> tuple[str,str]:
     """(生入力正規化後）を返す"""
     while True:
-        raw = input("部署番号を入力してください＞") #ユーザー入力の生データをそのままrawに代入する。この場面ではまだ表記揺れが残っている
+        raw = input("部署コードを入力してください＞") #ユーザー入力の生データをそのままrawに代入する。この場面ではまだ表記揺れが残っている
         dept_id = normalaization_dept_id(raw) #ユーザーのなま入力を整えてdept_idに代入する
         if dept_id:
             return raw,dept_id #rawと整えられたnユーザー入力の二つを返す
@@ -166,7 +166,7 @@ def main()->None:
                     "timestamp":ts,
                     "input_raw":input_raw,
                     "input_norm" : dept_id,
-                    "initail_result": "NG",
+                    "initial_result": "NG",
                     "choice": "1",
                     "corrected_raw": corrected_raw,
                     "corrected_norm": corrected,
