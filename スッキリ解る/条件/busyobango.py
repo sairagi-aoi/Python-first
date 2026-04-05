@@ -3,15 +3,26 @@ from pathlib import Path
 from datetime import datetime
 import csv
 
+# 次の改変候補メモ:
+# 1) 変数名・関数名・表示文のタイポ修正（VALD_DEPT_id / LOG_Path / sugest_similar など）
+# 2) `check_dept_id()` のような判定関数を作って、入出力と業務ロジックを分離する
+# 3) 追加・修正・差し戻し件数を集計する簡易レポート機能を追加する
+# 4) 部署マスタを辞書直書きではなく CSV から読み込むように変更する
+# 5) 修正入力時に候補を番号選択で選べるようにして再入力負荷を下げる
+# 6) ログ記録処理を共通化して、OK/NG/RETURN/CANCEL の分岐ごとの重複を減らす
+# 7) 例外処理やファイルエラーハンドリングを追加して、CSV 書き込み失敗時の原因を分かりやすくする
+# 8) `unittest` で正規化・候補表示・分岐判定のテストを追加する
+#
+
 DEPT_MASTER = {
     "jimuijika": "医療事務",
     "soudansentar":"相談センター",
     "kango1ns": "一病棟看護",
     "kango2ns": "二病棟看護",
-    "kango3ns": "三秒等看護",   
+    "kango3ns": "三病棟看護",   
 }
 
-VALD_DEPT_id = set(DEPT_MASTER.keys()) #部署マスタからキーを取り出してsetを作り、その内容をVALD_DEP_idに代入する
+VALD_DEPT_IDS = set(DEPT_MASTER.keys()) #部署マスタからキーを取り出してsetを作り、その内容をVALD_DEP_idに代入する
 
 LOG_Path = Path(__file__).with_name("dept_chek_log.csv") #ログ保存用のCSVファイルを作成する
 LOG_FIELDS = [
@@ -56,7 +67,7 @@ def show_vaild_depts() ->None:
 
 def sugest_similar(dept_id : str) ->None:
     """入力ミスの疑いがある場合に似た候補を表示する"""
-    candidates = get_close_matches(dept_id,VALD_DEPT_id, n=3 ,cutoff=0.6) #ユーザーの入力に0.6以上の類似性がある項目だけを３件返す
+    candidates = get_close_matches(dept_id,VALD_DEPT_IDS, n=3 ,cutoff=0.6) #ユーザーの入力に0.6以上の類似性がある項目だけを３件返す
     if candidates: #candidatesが空でなければ
         print("もしかして")
         for c in candidates: 
