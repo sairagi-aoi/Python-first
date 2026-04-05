@@ -127,6 +127,8 @@ def main()->None:
     
     #異常系
     print(f"\nNG: {dept_id}は登録されていません")
+    print("間違いの可能性があります。候補を確認してください。")
+    sugest_similar(dept_id)
 
     while True:
         choice = supervisor_decision()
@@ -136,7 +138,7 @@ def main()->None:
             append_log({
                 "timestamp":ts,
                 "input_raw":input_raw,
-                "input_norm":"dept_id",
+                "input_norm":dept_id,
                 "initial_result":"NG",
                 "choice" : "0",
                 "corrected_raw" : "",
