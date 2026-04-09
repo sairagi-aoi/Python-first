@@ -15,6 +15,18 @@ DEPT_MASTER = { #部署一覧のマスタ部分
 VALID_DEPT_IDS = set(DEPT_MASTER.keys()) #部署マスタのキーをsetでVALID_DEPT_IDSに代入する
 
 LOG_PATH = Path(__file__).with_name("dept_chek_log.csv") #このPythonファイルのパスをPathクラスに変換しpathlibで扱いやすいpathオブジェクトに変化させてファイル名をdept_chek_log.csvに変化させる
+LOG_FIELDS = [
+    "timestamp",
+    "input_raw",
+    "imput_norm",
+    "initial_result",
+    "choice",
+    "corrected_raw",
+    "corrected_norm",
+    "final_result",
+    "note",
 
+] #このセクションはCSVファイルの各項目を設定するせくしょんである。
 
-
+def now_str()->str:
+    return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
