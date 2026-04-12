@@ -30,3 +30,15 @@ LOG_FIELDS = [
 
 def now_str()->str:
     return datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+
+def append_log(row:dict)->None:
+    """CSVに1行追加する（ファイルがなければヘッダも書く)"""
+    file_exists = LOG_PATH.exists()
+    with LOG_PATH.open("a",newline="", encoding="utf-8-sing")as f:
+        writer = csv.DictWriter(f,fieldnames=LOG_FIELDS)
+        if not file_exists:
+            writer.writerheader()
+        writer.writerow(row)
+        
+
