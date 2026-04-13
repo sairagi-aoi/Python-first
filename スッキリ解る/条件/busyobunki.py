@@ -33,7 +33,7 @@ def now_str()->str:
 
 
 def append_log(row:dict)->None:
-    """CSVに1行追加する（ファイルがなければヘッダも書く)"""
+    """CSVに1行追加する(ファイルがなければヘッダも書く)"""
     file_exists = LOG_PATH.exists()
     with LOG_PATH.open("a",newline="", encoding="utf-8-sing")as f:
         writer = csv.DictWriter(f,fieldnames=LOG_FIELDS)
@@ -42,3 +42,19 @@ def append_log(row:dict)->None:
         writer.writerow(row)
         
 
+def normalize_dept_id(raw:str)->str: #ここは型ヒントであり、実際に文字情報に変化させているわけでは無い。
+    return raw.strip().lower()  #ユーザーの生入力データを受け取り、.strip()で前後の空白を削除し、.lower()で大文字を全て小文字に変換し正規化する。
+
+def show_help() ->None:
+    print("\n入力向け確認手順")
+    print("部署配布フォルダ当で確認してください。")
+    print("-ざっくり手順：①一覧確認 → ②正しい番号入力 → ③再チェック → ④送信\n")
+
+def show_vaild_depts() ->None:
+    print("登録済み部署番号（参考):")
+    for code,name in sorted(DEPT_MASTER.items()):
+        print(f"{code}-{name}")
+    print()
+
+
+        
