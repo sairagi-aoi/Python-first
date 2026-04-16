@@ -50,11 +50,36 @@ def show_help() ->None:
     print("部署配布フォルダ当で確認してください。")
     print("-ざっくり手順：①一覧確認 → ②正しい番号入力 → ③再チェック → ④送信\n")
 
-def show_vaild_depts() ->None:
-    print("登録済み部署番号（参考):")
-    for code,name in sorted(DEPT_MASTER.items()):
-        print(f"{code}-{name}")
-    print()
+def show_vaild_depts() ->None: #型ヒント。->Noneは戻り値が存在しないということ。
+    print("登録済み部署番号（参考):") #登録済み部署番号を表示するよという見出し。ユーザーに表示される。
+    for code,name in sorted(DEPT_MASTER.items()): #Sortedで並び替えた部署コードを一つずつ取り出ていく。{code}に部署コードがはいり、{nama}に部署ナンバーが入る。
+        print(f"{code}-{name}") #{code}に部署コードが入り、{name}に部署名が入る。
+    print() #空白行を差し込む用途。
 
 
+def suggest_sumilar(dept_id:str)->None:
+    candidates = get_close_matches(dept_id,VALID_DEPT_IDS,n=3,cutoff=0.6) #get_close_matchesを使い、dept_idとVALID_DEPT_IDSを比較し、類似度が0.6以上の候補を三つ選び、その結果をcandidatesに代入する。
+    if candidates:
+        print("もしかして：") #canddidatesが空でなければもしかしてとして以下の処理を実行する
+        for c in candidates: #candiatesに入っている候補を一つずつ取り出す。
+            print(f"-{c}: {DEPT_MASTER[c]}") #候補の部署コードとそれに対応する部署名を表示させる。
+        print()
+
+
+def prompt_dept_id()-> tuple[str,str]:
+    while True:
+        raw = input("部署コードを入力してください。>")
+        dept_id = normalize_dept_id(raw)
+        if dept_id:
+            return raw,dept_id
+        print("エラーです。もう一度入力してください。")
         
+
+def supervisor_decision()->str:
+    print("\n上司に確認：どうしますか？")
+    print("1)こちらで修正入力する")
+    print("2)差し戻す（再提出を依頼する）")
+    print("3)登録済み部署一覧を表示する")
+    print("0)中止する。")
+
+    
